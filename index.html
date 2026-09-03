@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Snail — a spatial publishing experiment." />
-    <title>Snail — Slow ideas, beautifully arranged</title>
+    <meta name="description" content="Omarchy — beautiful, fun and agentic Linux." />
+    <title>Omarchy — Beautiful, Fun &amp; Agentic Linux</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -14,72 +14,209 @@
     <div class="noise" aria-hidden="true"></div>
 
     <header class="topbar">
-      <a class="brand" href="#top" aria-label="Snail home">
-        <svg viewBox="0 0 42 24" aria-hidden="true"><path d="M15 19c-7 0-11-3-11-8 0-4 3-7 7-7 5 0 8 4 8 8 0 3-2 5-5 5-2 0-4-2-4-4 0-2 1-3 3-3 1 0 2 1 2 2"/><path d="M17 19h18c2 0 3-1 3-3 0-3-3-5-7-5h-6M31 11V7m0 0-2-2m2 2 2-2M36 12V9"/></svg>
-        <span>SNAIL®</span>
-      </a>
-      <p>Independent studio<br />Kyiv · UA</p>
-      <a class="contact" href="mailto:hello@snail.studio">Let’s make something <span>↗</span></a>
+      <div class="brand-shell">
+        <a class="brand-wordmark" href="#top" aria-label="Omarchy home">
+          <img src="assets/omarchy-wordmark-darkgray.png" alt="Omarchy" />
+        </a>
+        <nav class="workspace-switcher" aria-label="Section workspaces">
+          <a class="workspace-logo" href="#top" aria-label="Omarchy home">
+            <span aria-hidden="true">&#xe900;</span>
+          </a>
+          <a href="#section-welcome" data-workspace-target="0" aria-label="Workspace 1: Welcome" aria-current="step"><span>1</span></a>
+          <a href="#section-system" data-workspace-target="1" aria-label="Workspace 2: System"><span>2</span></a>
+          <a href="#section-videos" data-workspace-target="2" aria-label="Workspace 3: Videos"><span>3</span></a>
+          <a href="#section-workflow" data-workspace-target="3" aria-label="Workspace 4: Workflow"><span>4</span></a>
+          <a href="#section-community" data-workspace-target="4" aria-label="Workspace 5: Community"><span>5</span></a>
+          <a href="#section-plugins" data-workspace-target="5" aria-label="Workspace 6: Plugins"><span>6</span></a>
+          <a href="#section-join" data-workspace-target="6" aria-label="Workspace 7: Join"><span>7</span></a>
+        </nav>
+      </div>
+      <nav class="primary-nav" aria-label="Section navigation">
+        <div class="primary-nav-track">
+          <a href="#section-welcome" data-section-target="0" aria-current="step">Welcome</a>
+          <a href="#section-system" data-section-target="1">System</a>
+          <a href="#section-videos" data-section-target="2">Videos</a>
+          <a href="#section-workflow" data-section-target="3">Workflow</a>
+          <a href="#section-community" data-section-target="4">Community</a>
+          <a href="#section-plugins" data-section-target="5">Plugins</a>
+          <a href="#section-join" data-section-target="6">Join</a>
+          <span class="nav-indicator" aria-hidden="true"></span>
+        </div>
+      </nav>
+      <a class="download-link" href="https://iso.omarchy.org/">Get Omarchy <span>↘</span></a>
     </header>
 
     <main id="top" class="scroll-track">
+      <div class="snap-rail" aria-hidden="true">
+        <span id="section-welcome" class="snap-point"></span>
+        <span id="section-system" class="snap-point"></span>
+        <span id="section-videos" class="snap-point"></span>
+        <span id="section-workflow" class="snap-point"></span>
+        <span id="section-community" class="snap-point"></span>
+        <span id="section-plugins" class="snap-point"></span>
+        <span id="section-join" class="snap-point"></span>
+      </div>
       <div class="scene">
-        <div class="scene-meta">
-          <span id="counter">01 / 07</span>
-          <span class="hint">Scroll to uncoil <i>↓</i></span>
-        </div>
-
-        <div class="board" aria-label="Seven chapters about the Snail studio">
-          <article class="card hero-card" data-index="0" tabindex="0">
-            <div class="card-top"><span>Chapter 01</span><span>Introduction</span></div>
-            <div class="hero-mark" aria-hidden="true">
-              <svg viewBox="0 0 420 280"><path d="M202 231c-92 0-156-39-156-103C46 75 88 38 143 38c67 0 113 49 113 106 0 44-29 76-70 76-35 0-61-25-61-58 0-28 20-48 45-48 21 0 37 15 37 35 0 15-11 27-25 27"/><path d="M232 231h111c29 0 45-15 45-38 0-36-39-63-91-63h-30M321 130V86m0 0-20-22m20 22 20-22M364 139V98"/></svg>
-            </div>
+        <div class="board" aria-label="Seven chapters about Omarchy">
+          <article class="card hero-card image-card" data-index="0" tabindex="0">
+            <img class="cover-image" data-theme-image="hero" src="assets/tokyo-quattro.webp" alt="Audi Quattro driving through Tokyo at night" />
+            <div class="image-shade" aria-hidden="true"></div>
+            <div class="card-top"><span>Window 01</span><span>Welcome to Omarchy</span></div>
             <div class="hero-copy">
-              <h1>Ideas worth<br /><em>slowing down</em> for.</h1>
-              <p>We shape identities and digital places for people building a more thoughtful world.</p>
+              <div>
+                <p class="eyebrow">Linux by DHH</p>
+                <h1>Beautiful, fun<br />&amp; <em>agentic.</em></h1>
+              </div>
+              <div class="hero-intro">
+                <p>The malleable OS for the age of agents. Vibe your way through every alteration, tweak and desire.</p>
+                <div class="actions">
+                  <a class="button button-light" href="https://iso.omarchy.org/">Download ISO <span>↘</span></a>
+                  <a class="text-link" href="https://omarchy.org/manual/">Read the manual <span>↗</span></a>
+                </div>
+              </div>
             </div>
           </article>
 
-          <article class="card clay-card" data-index="1" tabindex="0">
-            <div class="card-top"><span>Chapter 02</span><span>Our pace</span></div>
-            <div class="card-number">02</div>
-            <div class="card-copy"><h2>Slow is<br />a superpower.</h2><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vel sapien at sem fermentum.</p></div>
+          <article class="card clay-card split-card" data-index="1" tabindex="0">
+            <div class="card-top"><span>Window 02</span><span>The Omakase</span></div>
+            <img class="card-image" data-theme-image="landscape" src="assets/tokyo-road.webp" alt="Road winding through a mountain landscape" loading="lazy" />
+            <div class="card-copy">
+              <h2>A complete<br />system.</h2>
+              <p>Arch, Hyprland and Quickshell, composed into one opinionated desktop. From Neovim to Chromium, Obsidian to LibreOffice, the tools are chosen and tuned so you can start immediately.</p>
+              <a class="text-link" href="https://omarchy.org/manual/">See what’s included <span>↗</span></a>
+            </div>
           </article>
 
-          <article class="card acid-card" data-index="2" tabindex="0">
-            <div class="card-top"><span>Chapter 03</span><span>What we do</span></div>
-            <div class="orbit" aria-hidden="true"><span></span></div>
-            <div class="card-copy"><h2>Brand,<br />web &amp; words.</h2><p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec ullamcorper nulla non metus.</p></div>
+          <article class="card acid-card video-card" data-index="2" tabindex="0">
+            <div class="card-top"><span>Window 03</span><span>Watch Omarchy</span></div>
+            <div class="video-gallery">
+              <a class="video-tile video-tile-featured" href="https://www.youtube.com/watch?v=F7fe9pa8OeE" target="_blank" rel="noopener noreferrer" aria-label="Watch Omarchy Quattro by David Heinemeier Hansson on YouTube">
+                <img src="assets/videos/omarchy-quattro.webp" alt="Omarchy Quattro by David Heinemeier Hansson" loading="lazy" />
+                <span class="video-play" aria-hidden="true"><i></i></span>
+                <span class="video-meta"><small>Official introduction</small><h2>Omarchy in motion.</h2></span>
+              </a>
+              <a class="video-tile" href="https://www.youtube.com/watch?v=9SDkU5VDQEQ" target="_blank" rel="noopener noreferrer" aria-label="Watch You need to switch to Linux RIGHT NOW by NetworkChuck on YouTube">
+                <img src="assets/videos/networkchuck.webp" alt="You need to switch to Linux RIGHT NOW by NetworkChuck" loading="lazy" />
+                <span class="video-play" aria-hidden="true"><i></i></span>
+                <span class="video-meta"><small>NetworkChuck</small><strong>Switch to Linux right now</strong></span>
+              </a>
+              <a class="video-tile" href="https://www.youtube.com/watch?v=5JPYJfN7HY0" target="_blank" rel="noopener noreferrer" aria-label="Watch They finally fixed Linux by Typecraft on YouTube">
+                <img src="assets/videos/typecraft.webp" alt="They finally fixed Linux by Typecraft" loading="lazy" />
+                <span class="video-play" aria-hidden="true"><i></i></span>
+                <span class="video-meta"><small>Typecraft</small><strong>They finally fixed Linux</strong></span>
+              </a>
+              <a class="video-tile" href="https://www.youtube.com/watch?v=qBKMe8AatY0" target="_blank" rel="noopener noreferrer" aria-label="Watch I Didn't Expect Omarchy 4 to Be This Good by LinuxBTW on YouTube">
+                <img src="assets/videos/linuxbtw.webp" alt="I Didn't Expect Omarchy 4 to Be This Good by LinuxBTW" loading="lazy" />
+                <span class="video-play" aria-hidden="true"><i></i></span>
+                <span class="video-meta"><small>LinuxBTW</small><strong>I didn’t expect it to be this good</strong></span>
+              </a>
+              <a class="video-tile" href="https://www.youtube.com/watch?v=KO2T0oET9go" target="_blank" rel="noopener noreferrer" aria-label="Watch If you use AI, switch to Omarchy immediately by Alex Finn on YouTube">
+                <img src="assets/videos/alex-finn.webp" alt="If you use AI, switch to Omarchy immediately by Alex Finn" loading="lazy" />
+                <span class="video-play" aria-hidden="true"><i></i></span>
+                <span class="video-meta"><small>Alex Finn</small><strong>If you use AI, switch to Omarchy</strong></span>
+              </a>
+            </div>
           </article>
 
-          <article class="card blue-card" data-index="3" tabindex="0">
-            <div class="card-top"><span>Chapter 04</span><span>Selected work</span></div>
-            <div class="steps" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
-            <div class="card-copy"><h2>Built to<br />be remembered.</h2><p>Sed posuere consectetur est at lobortis. Aenean eu leo quam pellentesque ornare sem lacinia.</p></div>
+          <article class="card blue-card split-card" data-index="3" tabindex="0">
+            <div class="card-top"><span>Window 04</span><span>Productive by default</span></div>
+            <img class="card-image card-image-wide" data-theme-image="workspace" src="assets/tokyo-city.webp" alt="A neon-lit cityscape from the Tokyo Night theme" loading="lazy" />
+            <div class="card-copy">
+              <p class="eyebrow">Everything in its place</p>
+              <h2>Keyboard first.<br />Flow always.</h2>
+              <p>A fast tiling desktop, a thoughtfully themed toolset and sensible hotkeys turn the whole system into one coherent workspace.</p>
+              <div class="tag-list" aria-label="Core Omarchy tools"><span>Hyprland</span><span>Quickshell</span><span>Neovim</span><span>Arch</span></div>
+            </div>
           </article>
 
           <article class="card rose-card" data-index="4" tabindex="0">
-            <div class="card-top"><span>Chapter 05</span><span>Our method</span></div>
-            <div class="rings" aria-hidden="true"></div>
-            <div class="card-copy"><h2>We listen.<br />Then make.</h2><p>Maecenas faucibus mollis interdum. Cras mattis consectetur purus sit amet fermentum.</p></div>
+            <div class="card-top"><span>Window 05</span><span>Open source, in motion</span></div>
+            <div class="community-grid">
+              <a href="https://omarchy.org/news/"><span>01</span><strong>News</strong><i>Announcements &amp; releases ↗</i></a>
+              <a href="https://omarchy.org/teams/"><span>02</span><strong>Teams</strong><i>The people guiding Omarchy ↗</i></a>
+              <a href="https://omarchy.org/patrons/"><span>03</span><strong>Patrons</strong><i>Supporting the mission ↗</i></a>
+              <a href="https://omarchy.org/sponsorships/"><span>04</span><strong>Sponsorships</strong><i>Funding open source ↗</i></a>
+            </div>
+            <div class="card-copy compact-copy"><p class="eyebrow">More than a distribution</p><h2>A community<br />with momentum.</h2></div>
           </article>
 
-          <article class="card ink-card" data-index="5" tabindex="0">
-            <div class="card-top"><span>Chapter 06</span><span>Small team</span></div>
-            <blockquote>“Small enough<br />to care about<br />the tiny things.”</blockquote>
-            <div class="card-copy"><p>Nullam quis risus eget urna mollis ornare vel eu leo. Integer posuere erat a ante venenatis.</p></div>
+          <article class="card ink-card image-card" data-index="5" tabindex="0">
+            <img class="cover-image" data-theme-image="plugin" src="assets/tokyo-swirl.webp" alt="A surreal figure framed by a circular landscape" loading="lazy" />
+            <div class="image-shade shade-strong" aria-hidden="true"></div>
+            <div class="card-top"><span>Window 06</span><span>Extend your shell</span></div>
+            <div class="plugin-copy">
+              <p class="eyebrow">Community-built</p>
+              <h2>Make it<br />uniquely yours.</h2>
+              <p>Discover plugins, inspect their source and shape the shell around the way you work.</p>
+              <a class="button button-light" href="https://plugins.omarchy.org/">Browse plugins <span>↗</span></a>
+            </div>
           </article>
 
           <article class="card sand-card" data-index="6" tabindex="0">
-            <div class="card-top"><span>Chapter 07</span><span>Say hello</span></div>
-            <div class="sun" aria-hidden="true"></div>
-            <div class="card-copy"><h2>Let’s leave<br />a good trail.</h2><p>Have a patient, ambitious idea? We would love to hear about it.</p><a href="mailto:hello@snail.studio">hello@snail.studio ↗</a></div>
+            <div class="card-top"><span>Window 07</span><span>Join the movement</span></div>
+            <div class="join-layout">
+              <div class="join-copy">
+                <p class="eyebrow">Computers should be fun again</p>
+                <h2>Be the<br />Omarch.</h2>
+                <p>Meet the people, see their workstations, wear the mark—or help make the next chapter possible.</p>
+              </div>
+              <div class="join-links">
+                <a href="https://discord.gg/tXFUdasqhY"><span>Discord</span><i>Talk with the community ↗</i></a>
+                <a href="https://omarchy.org/meetups/"><span>Meetups</span><i>Find your people ↗</i></a>
+                <a href="https://omarchy.org/workstations/"><span>Workstations</span><i>See how Omarchs work ↗</i></a>
+                <a href="https://supply.37signals.com/collections/omarchy"><span>Merch</span><i>Wear Omarchy ↗</i></a>
+                <a href="https://omarchy.org/air/"><span>AIR</span><i>Artists in residence ↗</i></a>
+              </div>
+            </div>
+            <p class="partner-note">Partner or patron? <a href="mailto:david@omarchy.org">david@omarchy.org ↗</a></p>
           </article>
+
+          <footer class="board-footer" aria-label="Omarchy organization and sponsorship information">
+            <p>Looking to become a partner or patron of Omarchy? Write <a href="mailto:david@omarchy.org">david@omarchy.org</a></p>
+            <p>
+              Incubated at
+              <a class="logo-lockup" href="https://37signals.com/"><span class="signals-mark" aria-hidden="true">✣</span>37signals</a>
+              <span>(makers of</span>
+              <a class="logo-lockup" href="https://basecamp.com/">
+                <svg class="basecamp-mark" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M4.5 14.5 9.2 9l2.7 3.1 2.4-2.2 5.2 5.2"/></svg>
+                Basecamp
+              </a>
+              <span>and</span>
+              <a class="logo-lockup" href="https://www.hey.com/"><span class="hey-mark" aria-hidden="true">⌁</span>HEY)</a>
+            </p>
+            <p>
+              Sponsored hosting by
+              <a class="logo-lockup cloudflare-lockup" href="https://www.cloudflare.com/">
+                <svg class="cloudflare-mark" viewBox="0 0 54 25" aria-hidden="true"><path d="M20.5 20.5H5.8A5.3 5.3 0 0 1 6 9.9a8.8 8.8 0 0 1 16.8-2.7 7.2 7.2 0 0 1 11.7 6.5c0 .6-.1 1.2-.2 1.7h4.3a4.1 4.1 0 0 1 0 8.2H20.5z"/><path d="M31 20.5h18"/></svg>
+                <strong>Cloudflare</strong>
+              </a>
+            </p>
+            <a class="trademark-link" href="https://omarchy.org/trademark/">Omarchy is a pending trademark</a>
+          </footer>
         </div>
       </div>
+      <span id="footer" class="scroll-end" aria-hidden="true"></span>
     </main>
 
-    <script src="script.js"></script>
+    <div class="bottom-controls">
+      <div class="layout-switcher" role="group" aria-label="Choose a window layout">
+        <span class="control-label">Layout:</span>
+        <button type="button" data-layout="dwindle" aria-pressed="true">Dwindle</button>
+        <span class="control-dot" aria-hidden="true">●</span>
+        <button type="button" data-layout="scrolling" aria-pressed="false">Scrolling</button>
+      </div>
+
+      <nav class="theme-switcher" aria-label="Choose a color theme">
+        <button type="button" data-theme="tokyo-night" aria-pressed="true">Tokyo Night</button>
+        <span class="control-dot" aria-hidden="true">●</span>
+        <button type="button" data-theme="everforest" aria-pressed="false">Everforest</button>
+        <span class="control-dot" aria-hidden="true">●</span>
+        <button type="button" data-theme="catppuccin" aria-pressed="false">Catppuccin</button>
+        <span class="control-dot" aria-hidden="true">●</span>
+        <button type="button" data-theme="nord" aria-pressed="false">Nord</button>
+      </nav>
+    </div>
+
+    <script type="module" src="script.js"></script>
   </body>
 </html>
