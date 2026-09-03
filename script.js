@@ -4,6 +4,20 @@ import {
   createScrollingLayout,
   LAYOUT_GAP
 } from './layouts.js';
+import catppuccinEyeUrl from './assets/catppuccin-eye.webp';
+import catppuccinOmarchyUrl from './assets/catppuccin-omarchy.webp';
+import catppuccinTotoroUrl from './assets/catppuccin-totoro.webp';
+import catppuccinWavesUrl from './assets/catppuccin-waves.webp';
+import everforestOmarchyUrl from './assets/everforest-omarchy.webp';
+import everforestTreeUrl from './assets/everforest-tree.webp';
+import nordBlackMoonUrl from './assets/nord-black-moon.webp';
+import nordCityViewUrl from './assets/nord-city-view.webp';
+import nordNightHawksUrl from './assets/nord-night-hawks.webp';
+import nordOmarchyUrl from './assets/nord-omarchy.webp';
+import tokyoCityUrl from './assets/tokyo-city.webp';
+import tokyoQuattroUrl from './assets/tokyo-quattro.webp';
+import tokyoRoadUrl from './assets/tokyo-road.webp';
+import tokyoSwirlUrl from './assets/tokyo-swirl.webp';
 
 const cards = [...document.querySelectorAll('.card')];
 const board = document.querySelector('.board');
@@ -50,28 +64,28 @@ const availableThemes = new Set(themeButtons.map((button) => button.dataset.them
 const availableLayouts = new Set(layoutButtons.map((button) => button.dataset.layout));
 const themeArtwork = {
   'tokyo-night': {
-    hero: { src: 'assets/tokyo-quattro.webp', alt: 'Audi Quattro driving through Tokyo at night', position: 'center 58%' },
-    landscape: { src: 'assets/tokyo-road.webp', alt: 'Road winding through a mountain landscape', position: 'center' },
-    workspace: { src: 'assets/tokyo-city.webp', alt: 'A neon-lit cityscape from the Tokyo Night theme', position: '58% center' },
-    plugin: { src: 'assets/tokyo-swirl.webp', alt: 'A surreal figure framed by a circular landscape', position: 'center' }
+    hero: { src: tokyoQuattroUrl, alt: 'Audi Quattro driving through Tokyo at night', position: 'center 58%' },
+    landscape: { src: tokyoRoadUrl, alt: 'Road winding through a mountain landscape', position: 'center' },
+    workspace: { src: tokyoCityUrl, alt: 'A neon-lit cityscape from the Tokyo Night theme', position: '58% center' },
+    plugin: { src: tokyoSwirlUrl, alt: 'A surreal figure framed by a circular landscape', position: 'center' }
   },
   everforest: {
-    hero: { src: 'assets/everforest-tree.webp', alt: 'Misty evergreen-covered mountains from the Everforest theme', position: 'center' },
-    landscape: { src: 'assets/everforest-tree.webp', alt: 'Misty evergreen-covered mountains from the Everforest theme', position: '25% center' },
-    workspace: { src: 'assets/everforest-tree.webp', alt: 'Forest ridges disappearing into fog', position: '75% center' },
-    plugin: { src: 'assets/everforest-omarchy.webp', alt: 'Omarchy wordmark in the Everforest theme', position: 'center' }
+    hero: { src: everforestTreeUrl, alt: 'Misty evergreen-covered mountains from the Everforest theme', position: 'center' },
+    landscape: { src: everforestTreeUrl, alt: 'Misty evergreen-covered mountains from the Everforest theme', position: '25% center' },
+    workspace: { src: everforestTreeUrl, alt: 'Forest ridges disappearing into fog', position: '75% center' },
+    plugin: { src: everforestOmarchyUrl, alt: 'Omarchy wordmark in the Everforest theme', position: 'center' }
   },
   catppuccin: {
-    hero: { src: 'assets/catppuccin-totoro.webp', alt: 'Totoro beneath a lavender moon in the Catppuccin theme', position: 'center' },
-    landscape: { src: 'assets/catppuccin-waves.webp', alt: 'Flowing lavender and blue waves from the Catppuccin theme', position: 'center' },
-    workspace: { src: 'assets/catppuccin-eye.webp', alt: 'A radial blue eye from the Catppuccin theme', position: 'center' },
-    plugin: { src: 'assets/catppuccin-omarchy.webp', alt: 'Omarchy wordmark in the Catppuccin theme', position: 'center' }
+    hero: { src: catppuccinTotoroUrl, alt: 'Totoro beneath a lavender moon in the Catppuccin theme', position: 'center' },
+    landscape: { src: catppuccinWavesUrl, alt: 'Flowing lavender and blue waves from the Catppuccin theme', position: 'center' },
+    workspace: { src: catppuccinEyeUrl, alt: 'A radial blue eye from the Catppuccin theme', position: 'center' },
+    plugin: { src: catppuccinOmarchyUrl, alt: 'Omarchy wordmark in the Catppuccin theme', position: 'center' }
   },
   nord: {
-    hero: { src: 'assets/nord-black-moon.webp', alt: 'Black moon above a mountain landscape in the Nord theme', position: 'center' },
-    landscape: { src: 'assets/nord-city-view.webp', alt: 'A quiet city view through a window in the Nord theme', position: 'center' },
-    workspace: { src: 'assets/nord-night-hawks.webp', alt: 'A cool-toned night diner scene from the Nord theme', position: 'center' },
-    plugin: { src: 'assets/nord-omarchy.webp', alt: 'Omarchy wordmark in the Nord theme', position: 'center' }
+    hero: { src: nordBlackMoonUrl, alt: 'Black moon above a mountain landscape in the Nord theme', position: 'center' },
+    landscape: { src: nordCityViewUrl, alt: 'A quiet city view through a window in the Nord theme', position: 'center' },
+    workspace: { src: nordNightHawksUrl, alt: 'A cool-toned night diner scene from the Nord theme', position: 'center' },
+    plugin: { src: nordOmarchyUrl, alt: 'Omarchy wordmark in the Nord theme', position: 'center' }
   }
 };
 
