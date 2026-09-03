@@ -2,6 +2,6 @@
   "name": "omarchy-snail",
   "private": true,
   "version": "0.1.0",
-  "scripts": { "dev": "vite", "build": "vite build", "preview": "vite preview" },
+  "scripts": { "dev": "vite", "build": "vite build", "preview": "vite preview", "test": "node --test" },
   "devDependencies": { "vite": "^7.1.4" }
 }

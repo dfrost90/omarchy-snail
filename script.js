@@ -1,3 +1,10 @@
+import {
+  createCompactLayout,
+  createDwindleLayout,
+  createScrollingLayout,
+  LAYOUT_GAP
+} from './layouts.js';
+
 const cards = [...document.querySelectorAll('.card')];
 const board = document.querySelector('.board');
 const footer = document.querySelector('.board-footer');
@@ -9,65 +16,118 @@ const primaryNav = document.querySelector('.primary-nav');
 const primaryNavTrack = document.querySelector('.primary-nav-track');
 const navIndicator = document.querySelector('.nav-indicator');
 const pageParams = new URLSearchParams(location.search);
-const footerPreview = pageParams.has('footer');
-const themeButtons = [...document.querySelectorAll('[data-theme]')];
+const themeButtons = [...document.querySelectorAll('button[data-theme]')];
 const themeImages = [...document.querySelectorAll('[data-theme-image]')];
 const layoutButtons = [...document.querySelectorAll('[data-layout]')];
 const compactViewport = matchMedia('(max-width: 860px)');
-const GAP = 10;
+const sectionCount = cards.length;
+const lastSectionIndex = sectionCount - 1;
+const puzzleFragments = [];
+const cardContents = [];
+const cardActivators = [];
+const miniTitleLineOverrides = {
+  2: ['Omarchy in', 'motion.']
+};
+const previewActions = [
+  'Explore Omarchy',
+  'Explore the system',
+  'Watch videos',
+  'Explore the workflow',
+  'Community',
+  'Browse plugins',
+  'Join Omarchy'
+];
 let layoutMode = null;
 let layoutSwitchTimer;
 let lastActiveSection = -1;
+let themeRequest = 0;
+
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+document.documentElement.style.setProperty('--section-count', sectionCount);
+document.documentElement.style.setProperty('--scroll-pages', sectionCount + 1);
 
 const availableThemes = new Set(themeButtons.map((button) => button.dataset.theme));
 const availableLayouts = new Set(layoutButtons.map((button) => button.dataset.layout));
 const themeArtwork = {
   'tokyo-night': {
-    hero: ['assets/tokyo-quattro.webp', 'Audi Quattro driving through Tokyo at night', 'center 58%'],
-    landscape: ['assets/tokyo-road.webp', 'Road winding through a mountain landscape', 'center'],
-    workspace: ['assets/tokyo-city.webp', 'A neon-lit cityscape from the Tokyo Night theme', '58% center'],
-    plugin: ['assets/tokyo-swirl.webp', 'A surreal figure framed by a circular landscape', 'center']
+    hero: { src: 'assets/tokyo-quattro.webp', alt: 'Audi Quattro driving through Tokyo at night', position: 'center 58%' },
+    landscape: { src: 'assets/tokyo-road.webp', alt: 'Road winding through a mountain landscape', position: 'center' },
+    workspace: { src: 'assets/tokyo-city.webp', alt: 'A neon-lit cityscape from the Tokyo Night theme', position: '58% center' },
+    plugin: { src: 'assets/tokyo-swirl.webp', alt: 'A surreal figure framed by a circular landscape', position: 'center' }
   },
   everforest: {
-    hero: ['assets/everforest-tree.webp', 'Misty evergreen-covered mountains from the Everforest theme', 'center'],
-    landscape: ['assets/everforest-tree.webp', 'Misty evergreen-covered mountains from the Everforest theme', '25% center'],
-    workspace: ['assets/everforest-tree.webp', 'Forest ridges disappearing into fog', '75% center'],
-    plugin: ['assets/everforest-omarchy.webp', 'Omarchy wordmark in the Everforest theme', 'center']
+    hero: { src: 'assets/everforest-tree.webp', alt: 'Misty evergreen-covered mountains from the Everforest theme', position: 'center' },
+    landscape: { src: 'assets/everforest-tree.webp', alt: 'Misty evergreen-covered mountains from the Everforest theme', position: '25% center' },
+    workspace: { src: 'assets/everforest-tree.webp', alt: 'Forest ridges disappearing into fog', position: '75% center' },
+    plugin: { src: 'assets/everforest-omarchy.webp', alt: 'Omarchy wordmark in the Everforest theme', position: 'center' }
   },
   catppuccin: {
-    hero: ['assets/catppuccin-totoro.webp', 'Totoro beneath a lavender moon in the Catppuccin theme', 'center'],
-    landscape: ['assets/catppuccin-waves.webp', 'Flowing lavender and blue waves from the Catppuccin theme', 'center'],
-    workspace: ['assets/catppuccin-eye.webp', 'A radial blue eye from the Catppuccin theme', 'center'],
-    plugin: ['assets/catppuccin-omarchy.webp', 'Omarchy wordmark in the Catppuccin theme', 'center']
+    hero: { src: 'assets/catppuccin-totoro.webp', alt: 'Totoro beneath a lavender moon in the Catppuccin theme', position: 'center' },
+    landscape: { src: 'assets/catppuccin-waves.webp', alt: 'Flowing lavender and blue waves from the Catppuccin theme', position: 'center' },
+    workspace: { src: 'assets/catppuccin-eye.webp', alt: 'A radial blue eye from the Catppuccin theme', position: 'center' },
+    plugin: { src: 'assets/catppuccin-omarchy.webp', alt: 'Omarchy wordmark in the Catppuccin theme', position: 'center' }
   },
   nord: {
-    hero: ['assets/nord-black-moon.webp', 'Black moon above a mountain landscape in the Nord theme', 'center'],
-    landscape: ['assets/nord-city-view.webp', 'A quiet city view through a window in the Nord theme', 'center'],
-    workspace: ['assets/nord-night-hawks.webp', 'A cool-toned night diner scene from the Nord theme', 'center'],
-    plugin: ['assets/nord-omarchy.webp', 'Omarchy wordmark in the Nord theme', 'center']
+    hero: { src: 'assets/nord-black-moon.webp', alt: 'Black moon above a mountain landscape in the Nord theme', position: 'center' },
+    landscape: { src: 'assets/nord-city-view.webp', alt: 'A quiet city view through a window in the Nord theme', position: 'center' },
+    workspace: { src: 'assets/nord-night-hawks.webp', alt: 'A cool-toned night diner scene from the Nord theme', position: 'center' },
+    plugin: { src: 'assets/nord-omarchy.webp', alt: 'Omarchy wordmark in the Nord theme', position: 'center' }
   }
 };
 
-function setTheme(theme) {
+function readPreference(key) {
+  try {
+    return localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+function savePreference(key, value) {
+  try {
+    localStorage.setItem(key, value);
+  } catch {
+    // The page remains fully functional when storage is unavailable.
+  }
+}
+
+function preloadImage(src) {
+  return new Promise((resolve) => {
+    const image = new Image();
+    image.onload = resolve;
+    image.onerror = resolve;
+    image.src = src;
+  });
+}
+
+async function setTheme(theme) {
   const nextTheme = availableThemes.has(theme) ? theme : 'tokyo-night';
-  document.documentElement.dataset.theme = nextTheme;
+  const request = ++themeRequest;
+  const artwork = themeArtwork[nextTheme];
+
   themeButtons.forEach((button) => {
     button.setAttribute('aria-pressed', String(button.dataset.theme === nextTheme));
   });
+
+  await Promise.all([...new Set(Object.values(artwork).map(({ src }) => src))].map(preloadImage));
+  if (request !== themeRequest) return;
+
+  document.documentElement.dataset.theme = nextTheme;
   themeImages.forEach((image) => {
-    const [src, alt, position] = themeArtwork[nextTheme][image.dataset.themeImage];
+    const { src, alt, position } = artwork[image.dataset.themeImage];
     image.src = src;
     image.alt = alt;
     image.style.objectPosition = position;
   });
-  localStorage.setItem('omarchy-home-theme', nextTheme);
+  document.documentElement.classList.add('theme-ready');
+  savePreference('omarchy-home-theme', nextTheme);
 }
 
 themeButtons.forEach((button) => {
   button.addEventListener('click', () => setTheme(button.dataset.theme));
 });
 
-setTheme(pageParams.get('theme') || localStorage.getItem('omarchy-home-theme'));
+setTheme(pageParams.get('theme') || document.documentElement.dataset.theme || readPreference('omarchy-home-theme'));
 
 function setLayout(layout) {
   const nextLayout = availableLayouts.has(layout) ? layout : 'dwindle';
@@ -77,7 +137,7 @@ function setLayout(layout) {
   layoutButtons.forEach((button) => {
     button.setAttribute('aria-pressed', String(button.dataset.layout === nextLayout));
   });
-  localStorage.setItem('omarchy-home-layout', nextLayout);
+  savePreference('omarchy-home-layout', nextLayout);
 
   if (hasChanged) {
     board.classList.add('is-layout-switching');
@@ -91,26 +151,31 @@ layoutButtons.forEach((button) => {
   button.addEventListener('click', () => setLayout(button.dataset.layout));
 });
 
-setLayout(pageParams.get('layout') || localStorage.getItem('omarchy-home-layout'));
+setLayout(pageParams.get('layout') || readPreference('omarchy-home-layout'));
 
-function scrollToCard(index) {
+function scrollToCard(index, updateHistory = false) {
   snapPoints[index]?.scrollIntoView({
     behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
     block: 'start'
   });
+
+  if (updateHistory) {
+    const hash = `#${snapPoints[index].id}`;
+    if (location.hash !== hash) history.pushState({ section: index }, '', hash);
+  }
 }
 
 sectionNavLinks.forEach((link) => {
   link.addEventListener('click', (event) => {
     event.preventDefault();
-    scrollToCard(Number(link.dataset.sectionTarget));
+    scrollToCard(Number(link.dataset.sectionTarget), true);
   });
 });
 
 workspaceLinks.forEach((link) => {
   link.addEventListener('click', (event) => {
     event.preventDefault();
-    scrollToCard(Number(link.dataset.workspaceTarget));
+    scrollToCard(Number(link.dataset.workspaceTarget), true);
   });
 });
 
@@ -129,6 +194,62 @@ function updateMarqueeSpeed(card, accelerated) {
 }
 
 cards.forEach((card, index) => {
+  const content = document.createElement('div');
+  content.className = 'card-content';
+  while (card.firstChild) content.append(card.firstChild);
+  card.append(content);
+  cardContents[index] = content;
+
+  const fragment = document.createElement('div');
+  fragment.className = 'puzzle-mark';
+  fragment.setAttribute('aria-hidden', 'true');
+  card.prepend(fragment);
+  puzzleFragments[index] = fragment;
+
+  const heading = content.querySelector('h1, h2');
+  if (heading) {
+    const miniTitle = document.createElement('div');
+    const titleTrack = document.createElement('div');
+    const headingText = heading.cloneNode(true);
+    headingText.querySelectorAll('br').forEach((lineBreak) => lineBreak.replaceWith('\n'));
+    const sourceLines = headingText.textContent
+      .split('\n')
+      .map((line) => line.replace(/\s+/g, ' ').trim())
+      .filter(Boolean);
+    const titleLines = miniTitleLineOverrides[index] || sourceLines;
+    const title = titleLines.join(' ');
+
+    miniTitle.className = 'mini-title';
+    miniTitle.setAttribute('aria-hidden', 'true');
+    titleTrack.className = 'mini-title-track';
+
+    for (let copy = 0; copy < 2; copy += 1) {
+      const titleCopy = document.createElement('span');
+      if (titleLines.length > 1) {
+        titleCopy.append(`${titleLines[0]} `, document.createElement('br'), titleLines.slice(1).join(' '));
+      } else {
+        titleCopy.textContent = title;
+      }
+      titleTrack.append(titleCopy);
+    }
+
+    miniTitle.append(titleTrack);
+    card.append(miniTitle);
+  }
+
+  const activator = document.createElement('button');
+  const sectionName = content.querySelector('.card-top span:last-child')?.textContent.trim() || `section ${index + 1}`;
+  activator.className = 'card-activator';
+  activator.type = 'button';
+  activator.setAttribute('aria-label', `Open ${sectionName}`);
+  const activatorLabel = document.createElement('span');
+  activatorLabel.className = 'card-activator-label';
+  activatorLabel.textContent = `${previewActions[index]} ↗`;
+  activator.append(activatorLabel);
+  activator.addEventListener('click', () => scrollToCard(index, true));
+  card.append(activator);
+  cardActivators[index] = activator;
+
   const startMarquee = (accelerated) => {
     if (!card.classList.contains('is-mini')) return;
     card.classList.add('has-marquee-started');
@@ -138,148 +259,38 @@ cards.forEach((card, index) => {
   card.addEventListener('pointerleave', () => updateMarqueeSpeed(card, false));
   card.addEventListener('focusin', () => startMarquee(true));
   card.addEventListener('focusout', () => requestAnimationFrame(() => updateMarqueeSpeed(card, card.matches(':hover'))));
-
-  const fragment = document.createElement('div');
-  fragment.className = 'puzzle-mark';
-  fragment.setAttribute('aria-hidden', 'true');
-  card.prepend(fragment);
-
-  const heading = card.querySelector('h1, h2');
-  if (heading) {
-    const miniTitle = document.createElement('div');
-    const titleTrack = document.createElement('div');
-    const headingText = heading.cloneNode(true);
-    headingText.querySelectorAll('br').forEach((lineBreak) => lineBreak.replaceWith(' '));
-    const title = headingText.textContent.replace(/\s+/g, ' ').trim();
-
-    miniTitle.className = 'mini-title';
-    miniTitle.setAttribute('aria-hidden', 'true');
-    titleTrack.className = 'mini-title-track';
-
-    for (let copy = 0; copy < 2; copy += 1) {
-      const titleCopy = document.createElement('span');
-      titleCopy.textContent = title;
-      titleTrack.append(titleCopy);
-    }
-
-    miniTitle.append(titleTrack);
-    card.append(miniTitle);
-  }
-
-  card.addEventListener('click', (event) => {
-    if (card.matches('.video-card.is-mini')) {
-      event.preventDefault();
-      scrollToCard(index);
-      return;
-    }
-    if (event.target.closest('a, button')) return;
-    scrollToCard(index);
-  });
-
-  card.addEventListener('keydown', (event) => {
-    if (event.target !== card || !['Enter', ' '].includes(event.key)) return;
-    event.preventDefault();
-    scrollToCard(index);
-  });
 });
 
 const lerp = (a, b, t) => a + (b - a) * t;
 const ease = (t) => t * t * (3 - 2 * t);
 
-function dwindleLayoutFor(active, width, height) {
-  const mainW = Math.round(width * 0.6);
-  const sideX = mainW + GAP;
-  const sideW = width - sideX;
-  const positions = [];
-
-  cards.forEach((_, index) => {
-    if (index < active) {
-      positions[index] = { x: 0, y: -height - GAP, w: mainW, h: height };
-    } else if (index === active) {
-      positions[index] = { x: 0, y: 0, w: mainW, h: height };
-    }
-  });
-
-  const future = cards.length - active - 1;
-  let remainder = { x: sideX, y: 0, w: sideW, h: height };
-
-  for (let n = 0; n < future; n++) {
-    const index = active + n + 1;
-    const left = future - n;
-
-    if (left === 1) {
-      positions[index] = { ...remainder };
-      continue;
-    }
-
-    // Hyprland-style dwindle: each new tile alternates between taking
-    // the upper half and the left half of the remaining rectangle.
-    const horizontal = n % 2 === 0;
-    if (horizontal) {
-      const h = Math.round((remainder.h - GAP) * 0.5);
-      positions[index] = { x: remainder.x, y: remainder.y, w: remainder.w, h };
-      remainder = {
-        x: remainder.x,
-        y: remainder.y + h + GAP,
-        w: remainder.w,
-        h: remainder.h - h - GAP
-      };
-    } else {
-      const w = Math.round((remainder.w - GAP) * 0.5);
-      positions[index] = { x: remainder.x, y: remainder.y, w, h: remainder.h };
-      remainder = {
-        x: remainder.x + w + GAP,
-        y: remainder.y,
-        w: remainder.w - w - GAP,
-        h: remainder.h
-      };
-    }
-  }
-  return positions;
-}
-
-function scrollingLayoutFor(active, width, height) {
-  const columnWidth = Math.round(width * 0.49);
-  const columnStep = columnWidth + GAP;
-
-  return cards.map((_, index) => ({
-    x: (index - active) * columnStep,
-    y: 0,
-    w: columnWidth,
-    h: height
-  }));
-}
-
-function compactLayoutFor(active, width, height) {
-  return cards.map((_, index) => ({
-    x: (index - active) * (width + GAP),
-    y: 0,
-    w: width,
-    h: height
-  }));
-}
-
 function layoutFor(active, width, height) {
-  if (compactViewport.matches) return compactLayoutFor(active, width, height);
+  if (compactViewport.matches) return createCompactLayout(sectionCount, active, width, height);
   return layoutMode === 'scrolling'
-    ? scrollingLayoutFor(active, width, height)
-    : dwindleLayoutFor(active, width, height);
+    ? createScrollingLayout(sectionCount, active, width, height)
+    : createDwindleLayout(sectionCount, active, width, height);
 }
 
 function render() {
-  const rect = board.getBoundingClientRect();
-  const maxScroll = document.documentElement.scrollHeight - innerHeight;
-  const pageProgress = scrollY / innerHeight;
-  const raw = footerPreview
-    ? cards.length - 1
-    : compactViewport.matches
-      ? Math.min(cards.length - 1, pageProgress)
-      : (maxScroll ? scrollY / maxScroll * (cards.length - 1) : 0);
-  const active = Math.min(cards.length - 1, Math.floor(raw));
-  const activeSection = Math.min(cards.length - 1, Math.round(raw));
+  const pageProgress = Math.max(0, scrollY / innerHeight);
+  const raw = Math.min(lastSectionIndex, pageProgress);
+  const active = Math.min(lastSectionIndex, Math.floor(raw));
+  const activeSection = Math.min(lastSectionIndex, Math.round(raw));
   const t = ease(raw - active);
+  const isScrolled = raw > 0.04;
+
+  topbar.classList.toggle('is-scrolled', isScrolled);
+
+  // Read all geometry before changing card styles to avoid forced layout work.
+  const rect = board.getBoundingClientRect();
+  const navItems = sectionNavLinks.map((link) => ({
+    left: link.offsetLeft,
+    width: link.offsetWidth
+  }));
+  const navWidth = primaryNav.clientWidth;
+  const navTrackLeft = primaryNavTrack.offsetLeft;
   const from = layoutFor(active, rect.width, rect.height);
-  const to = layoutFor(Math.min(active + 1, cards.length - 1), rect.width, rect.height);
+  const to = layoutFor(Math.min(active + 1, lastSectionIndex), rect.width, rect.height);
   const home = layoutFor(0, rect.width, rect.height);
   const puzzleW = Math.min(rect.width * 0.78, 1180);
   const puzzleH = puzzleW / (1860 / 402);
@@ -293,31 +304,36 @@ function render() {
     card.style.width = `${w}px`;
     card.style.height = `${h}px`;
     card.style.transform = `translate3d(${x}px,${y}px,0)`;
-    card.style.zIndex = String(cards.length - Math.abs(i - active));
-    const fragment = card.querySelector('.puzzle-mark');
+    card.style.zIndex = String(sectionCount - Math.abs(i - active));
+    const fragment = puzzleFragments[i];
     fragment.style.left = `${puzzleX - home[i].x}px`;
     fragment.style.top = `${puzzleY - home[i].y}px`;
     fragment.style.width = `${puzzleW}px`;
     fragment.style.height = `${puzzleH}px`;
     card.classList.toggle('is-mini', !compactViewport.matches && (w < 500 || h < 240));
     card.classList.toggle('is-compact', !compactViewport.matches && w >= 500 && h < 350);
-    card.setAttribute('aria-hidden', i < active ? 'true' : 'false');
+    const isPreview = i !== activeSection;
+    const isVisiblePreview = isPreview && x + w > 0 && x < rect.width && y + h > 0 && y < rect.height;
+    card.classList.toggle('is-preview', isPreview);
+    cardContents[i].inert = isPreview;
+    cardContents[i].setAttribute('aria-hidden', String(isPreview));
+    cardActivators[i].hidden = !isVisiblePreview;
   });
 
   const footerX = compactViewport.matches ? 0 : layoutMode === 'scrolling'
-    ? Math.round(rect.width * 0.49) + GAP
-    : Math.round(rect.width * 0.6) + GAP;
+    ? Math.round(rect.width * 0.49) + LAYOUT_GAP
+    : Math.round(rect.width * 0.6) + LAYOUT_GAP;
   const footerProgress = Math.max(0, Math.min(1, compactViewport.matches
-    ? (pageProgress - 6.08) / 0.72
-    : (raw - 5.45) / 0.45));
+    ? (pageProgress - (lastSectionIndex + 0.08)) / 0.72
+    : (raw - (lastSectionIndex - 0.55)) / 0.45));
   footer.style.left = `${footerX}px`;
   footer.style.width = `${rect.width - footerX}px`;
   footer.style.height = `${rect.height}px`;
   footer.style.opacity = String(footerProgress);
   footer.style.transform = `translate3d(0, ${lerp(24, 0, ease(footerProgress))}px, 0)`;
   footer.style.pointerEvents = footerProgress > 0.9 ? 'auto' : 'none';
+  footer.inert = footerProgress <= 0.9;
   footer.setAttribute('aria-hidden', footerProgress > 0.9 ? 'false' : 'true');
-  topbar.classList.toggle('is-scrolled', raw > 0.04);
   sectionNavLinks.forEach((link, index) => {
     if (index === activeSection) link.setAttribute('aria-current', 'step');
     else link.removeAttribute('aria-current');
@@ -331,7 +347,8 @@ function render() {
 
   if (compactViewport.matches && activeSection !== lastActiveSection) {
     const activeLink = sectionNavLinks[activeSection];
-    const navTarget = activeLink.offsetLeft + activeLink.offsetWidth / 2 - primaryNav.clientWidth / 2;
+    const activeNavItem = navItems[activeSection];
+    const navTarget = activeNavItem.left + activeNavItem.width / 2 - navWidth / 2;
     primaryNav.scrollTo({
       left: Math.max(0, navTarget),
       behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
@@ -341,15 +358,15 @@ function render() {
   }
   lastActiveSection = activeSection;
 
-  const currentNavItem = sectionNavLinks[active];
-  const nextNavItem = sectionNavLinks[Math.min(active + 1, sectionNavLinks.length - 1)];
+  const currentNavItem = navItems[active];
+  const nextNavItem = navItems[Math.min(active + 1, lastSectionIndex)];
   const indicatorProgress = ease(raw - active);
-  const indicatorX = lerp(currentNavItem.offsetLeft, nextNavItem.offsetLeft, indicatorProgress);
-  const indicatorWidth = lerp(currentNavItem.offsetWidth, nextNavItem.offsetWidth, indicatorProgress);
-  const currentNavCenter = currentNavItem.offsetLeft + currentNavItem.offsetWidth / 2;
-  const nextNavCenter = nextNavItem.offsetLeft + nextNavItem.offsetWidth / 2;
+  const indicatorX = lerp(currentNavItem.left, nextNavItem.left, indicatorProgress);
+  const indicatorWidth = lerp(currentNavItem.width, nextNavItem.width, indicatorProgress);
+  const currentNavCenter = currentNavItem.left + currentNavItem.width / 2;
+  const nextNavCenter = nextNavItem.left + nextNavItem.width / 2;
   const navCenter = lerp(currentNavCenter, nextNavCenter, indicatorProgress);
-  primaryNavTrack.style.setProperty('--nav-shift', `${primaryNav.clientWidth / 2 - primaryNavTrack.offsetLeft - navCenter}px`);
+  primaryNavTrack.style.setProperty('--nav-shift', `${navWidth / 2 - navTrackLeft - navCenter}px`);
   navIndicator.style.width = `${indicatorWidth}px`;
   navIndicator.style.transform = `translate3d(${indicatorX}px, 0, 0)`;
 }
@@ -364,6 +381,7 @@ addEventListener('resize', requestRender);
 render();
 document.fonts?.ready.then(requestRender);
 
-if (location.hash === '#footer') {
-  setTimeout(() => scrollTo(0, document.documentElement.scrollHeight), 100);
-}
+addEventListener('popstate', () => {
+  const target = document.querySelector(location.hash || '#top');
+  target?.scrollIntoView({ behavior: 'auto', block: 'start' });
+});

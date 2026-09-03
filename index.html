@@ -5,6 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Omarchy — beautiful, fun and agentic Linux." />
     <title>Omarchy — Beautiful, Fun &amp; Agentic Linux</title>
+    <script>
+      (() => {
+        const themes = new Set(['tokyo-night', 'everforest', 'catppuccin', 'nord']);
+        try {
+          const requested = new URLSearchParams(location.search).get('theme');
+          const saved = localStorage.getItem('omarchy-home-theme');
+          const theme = requested || saved;
+          if (themes.has(theme)) document.documentElement.dataset.theme = theme;
+        } catch {}
+      })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -58,8 +69,8 @@
       </div>
       <div class="scene">
         <div class="board" aria-label="Seven chapters about Omarchy">
-          <article class="card hero-card image-card" data-index="0" tabindex="0">
-            <img class="cover-image" data-theme-image="hero" src="assets/tokyo-quattro.webp" alt="Audi Quattro driving through Tokyo at night" />
+          <article class="card hero-card image-card" data-index="0">
+            <img class="cover-image" data-theme-image="hero" src="assets/tokyo-quattro.webp" alt="Audi Quattro driving through Tokyo at night" width="2200" height="1238" fetchpriority="high" />
             <div class="image-shade" aria-hidden="true"></div>
             <div class="card-top"><span>Window 01</span><span>Welcome to Omarchy</span></div>
             <div class="hero-copy">
@@ -77,9 +88,9 @@
             </div>
           </article>
 
-          <article class="card clay-card split-card" data-index="1" tabindex="0">
+          <article class="card clay-card split-card" data-index="1">
             <div class="card-top"><span>Window 02</span><span>The Omakase</span></div>
-            <img class="card-image" data-theme-image="landscape" src="assets/tokyo-road.webp" alt="Road winding through a mountain landscape" loading="lazy" />
+            <img class="card-image" data-theme-image="landscape" src="assets/tokyo-road.webp" alt="Road winding through a mountain landscape" width="1800" height="1013" loading="lazy" decoding="async" />
             <div class="card-copy">
               <h2>A complete<br />system.</h2>
               <p>Arch, Hyprland and Quickshell, composed into one opinionated desktop. From Neovim to Chromium, Obsidian to LibreOffice, the tools are chosen and tuned so you can start immediately.</p>
@@ -87,40 +98,40 @@
             </div>
           </article>
 
-          <article class="card acid-card video-card" data-index="2" tabindex="0">
+          <article class="card acid-card video-card" data-index="2">
             <div class="card-top"><span>Window 03</span><span>Watch Omarchy</span></div>
             <div class="video-gallery">
               <a class="video-tile video-tile-featured" href="https://www.youtube.com/watch?v=F7fe9pa8OeE" target="_blank" rel="noopener noreferrer" aria-label="Watch Omarchy Quattro by David Heinemeier Hansson on YouTube">
-                <img src="assets/videos/omarchy-quattro.webp" alt="Omarchy Quattro by David Heinemeier Hansson" loading="lazy" />
+                <img src="assets/videos/omarchy-quattro.webp" alt="Omarchy Quattro by David Heinemeier Hansson" width="1280" height="720" loading="lazy" decoding="async" />
                 <span class="video-play" aria-hidden="true"><i></i></span>
                 <span class="video-meta"><small>Official introduction</small><h2>Omarchy in motion.</h2></span>
               </a>
               <a class="video-tile" href="https://www.youtube.com/watch?v=9SDkU5VDQEQ" target="_blank" rel="noopener noreferrer" aria-label="Watch You need to switch to Linux RIGHT NOW by NetworkChuck on YouTube">
-                <img src="assets/videos/networkchuck.webp" alt="You need to switch to Linux RIGHT NOW by NetworkChuck" loading="lazy" />
+                <img src="assets/videos/networkchuck.webp" alt="You need to switch to Linux RIGHT NOW by NetworkChuck" width="1280" height="720" loading="lazy" decoding="async" />
                 <span class="video-play" aria-hidden="true"><i></i></span>
                 <span class="video-meta"><small>NetworkChuck</small><strong>Switch to Linux right now</strong></span>
               </a>
               <a class="video-tile" href="https://www.youtube.com/watch?v=5JPYJfN7HY0" target="_blank" rel="noopener noreferrer" aria-label="Watch They finally fixed Linux by Typecraft on YouTube">
-                <img src="assets/videos/typecraft.webp" alt="They finally fixed Linux by Typecraft" loading="lazy" />
+                <img src="assets/videos/typecraft.webp" alt="They finally fixed Linux by Typecraft" width="1280" height="720" loading="lazy" decoding="async" />
                 <span class="video-play" aria-hidden="true"><i></i></span>
                 <span class="video-meta"><small>Typecraft</small><strong>They finally fixed Linux</strong></span>
               </a>
               <a class="video-tile" href="https://www.youtube.com/watch?v=qBKMe8AatY0" target="_blank" rel="noopener noreferrer" aria-label="Watch I Didn't Expect Omarchy 4 to Be This Good by LinuxBTW on YouTube">
-                <img src="assets/videos/linuxbtw.webp" alt="I Didn't Expect Omarchy 4 to Be This Good by LinuxBTW" loading="lazy" />
+                <img src="assets/videos/linuxbtw.webp" alt="I Didn't Expect Omarchy 4 to Be This Good by LinuxBTW" width="1280" height="720" loading="lazy" decoding="async" />
                 <span class="video-play" aria-hidden="true"><i></i></span>
                 <span class="video-meta"><small>LinuxBTW</small><strong>I didn’t expect it to be this good</strong></span>
               </a>
               <a class="video-tile" href="https://www.youtube.com/watch?v=KO2T0oET9go" target="_blank" rel="noopener noreferrer" aria-label="Watch If you use AI, switch to Omarchy immediately by Alex Finn on YouTube">
-                <img src="assets/videos/alex-finn.webp" alt="If you use AI, switch to Omarchy immediately by Alex Finn" loading="lazy" />
+                <img src="assets/videos/alex-finn.webp" alt="If you use AI, switch to Omarchy immediately by Alex Finn" width="1280" height="720" loading="lazy" decoding="async" />
                 <span class="video-play" aria-hidden="true"><i></i></span>
                 <span class="video-meta"><small>Alex Finn</small><strong>If you use AI, switch to Omarchy</strong></span>
               </a>
             </div>
           </article>
 
-          <article class="card blue-card split-card" data-index="3" tabindex="0">
+          <article class="card blue-card split-card" data-index="3">
             <div class="card-top"><span>Window 04</span><span>Productive by default</span></div>
-            <img class="card-image card-image-wide" data-theme-image="workspace" src="assets/tokyo-city.webp" alt="A neon-lit cityscape from the Tokyo Night theme" loading="lazy" />
+            <img class="card-image card-image-wide" data-theme-image="workspace" src="assets/tokyo-city.webp" alt="A neon-lit cityscape from the Tokyo Night theme" width="1800" height="1013" loading="lazy" decoding="async" />
             <div class="card-copy">
               <p class="eyebrow">Everything in its place</p>
               <h2>Keyboard first.<br />Flow always.</h2>
@@ -129,7 +140,7 @@
             </div>
           </article>
 
-          <article class="card rose-card" data-index="4" tabindex="0">
+          <article class="card rose-card" data-index="4">
             <div class="card-top"><span>Window 05</span><span>Open source, in motion</span></div>
             <div class="community-grid">
               <a href="https://omarchy.org/news/"><span>01</span><strong>News</strong><i>Announcements &amp; releases ↗</i></a>
@@ -140,8 +151,8 @@
             <div class="card-copy compact-copy"><p class="eyebrow">More than a distribution</p><h2>A community<br />with momentum.</h2></div>
           </article>
 
-          <article class="card ink-card image-card" data-index="5" tabindex="0">
-            <img class="cover-image" data-theme-image="plugin" src="assets/tokyo-swirl.webp" alt="A surreal figure framed by a circular landscape" loading="lazy" />
+          <article class="card ink-card image-card" data-index="5">
+            <img class="cover-image" data-theme-image="plugin" src="assets/tokyo-swirl.webp" alt="A surreal figure framed by a circular landscape" width="1800" height="764" loading="lazy" decoding="async" />
             <div class="image-shade shade-strong" aria-hidden="true"></div>
             <div class="card-top"><span>Window 06</span><span>Extend your shell</span></div>
             <div class="plugin-copy">
@@ -152,7 +163,7 @@
             </div>
           </article>
 
-          <article class="card sand-card" data-index="6" tabindex="0">
+          <article class="card sand-card" data-index="6">
             <div class="card-top"><span>Window 07</span><span>Join the movement</span></div>
             <div class="join-layout">
               <div class="join-copy">
@@ -206,7 +217,7 @@
         <button type="button" data-layout="scrolling" aria-pressed="false">Scrolling</button>
       </div>
 
-      <nav class="theme-switcher" aria-label="Choose a color theme">
+      <div class="theme-switcher" role="group" aria-label="Choose a color theme">
         <button type="button" data-theme="tokyo-night" aria-pressed="true">Tokyo Night</button>
         <span class="control-dot" aria-hidden="true">●</span>
         <button type="button" data-theme="everforest" aria-pressed="false">Everforest</button>
@@ -214,7 +225,7 @@
         <button type="button" data-theme="catppuccin" aria-pressed="false">Catppuccin</button>
         <span class="control-dot" aria-hidden="true">●</span>
         <button type="button" data-theme="nord" aria-pressed="false">Nord</button>
-      </nav>
+      </div>
     </div>
 
     <script type="module" src="script.js"></script>
